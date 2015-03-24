@@ -28,7 +28,10 @@ public class CompleteTree
 
 		for(int i = 1; i < repr.length(); i++)
 		{
-			if(repr.charAt(i) != '.') arr[i] = new TreeNode(Integer.parseInt(repr.charAt(i) + ""));
+			if(repr.charAt(i) != '.')
+			{
+				arr[i] = new TreeNode(Integer.parseInt(repr.charAt(i) + ""));
+			}
 		}
 		
 		for(int i = 1; i < repr.length(); i++)
