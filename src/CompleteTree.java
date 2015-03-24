@@ -2,7 +2,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 
-public class Main 
+public class CompleteTree 
 {
 	
 	public static void main(String[] args)
@@ -14,14 +14,32 @@ public class Main
 		
 		one.left = two;
 		one.right = three;
-		three.left = four;
-		serialize(one);
+		two.left = four;
+		String repr = serialize(one);
+		
+		System.out.println(repr.equals(serialize(deserialize(repr))));
 	}
 	
-	public static TreeNode deserialize()
+	public static TreeNode deserialize(String repr)
 	{
+		// Adding dummy variable for convenience.
+		repr = "?" + repr;
+		TreeNode[] arr = new TreeNode[repr.length()];
+
+		for(int i = 1; i < repr.length(); i++)
+		{
+			if(repr.charAt(i) != '.') arr[i] = new TreeNode(Integer.parseInt(repr.charAt(i) + ""));
+		}
 		
-		
+		for(int i = 1; i < repr.length(); i++)
+		{
+			if(arr[i] != null)
+			{
+				arr[i].left = arr[left(i)];
+				arr[i].right = arr[right(i)];
+			}
+		}
+		return arr[1];
 	}
 	
 	public static String serialize(TreeNode root)
@@ -36,7 +54,7 @@ public class Main
 			TreeNode curr = q.remove();
 			if(!curr.dummy)
 			{
-				builder.append(curr.val).append(" "); 
+				builder.append(curr.val); 
 				if(curr.left == null) q.add(new TreeNode());
 				else q.add(curr.left);
 				
@@ -45,15 +63,24 @@ public class Main
 			}
 			else
 			{
-				builder.append(".").append(" ");
+				builder.append(".");
 			}
-			
 		}
-		
 		return builder.toString();
-		
 	}
 	
+	/*
+	 * Non-functional utilities.
+	 */
+	
+	private static int left(int i)
+	{
+		return 2 * i;
+	}
+	private static int right(int i)
+	{
+		return (2 * i) + 1;
+	}
 	
 	public static class TreeNode
 	{
